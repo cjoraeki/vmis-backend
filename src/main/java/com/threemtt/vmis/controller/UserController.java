@@ -1,10 +1,11 @@
 package com.threemtt.vmis.controller;
 
+import com.threemtt.vmis.dto.request.AdminDto;
+import com.threemtt.vmis.dto.request.LoginDto;
 import com.threemtt.vmis.dto.request.UserRequest;
 import com.threemtt.vmis.dto.response.UserResponse;
 import com.threemtt.vmis.model.Officer;
 import com.threemtt.vmis.service.UserServiceImpl;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,6 +48,26 @@ public class UserController {
             return new ResponseEntity<>(updatedUser, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> adminLogin(@RequestBody AdminDto adminDto) {
+        try {
+            String response = userService.adminLogin(adminDto);
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/login/officer")
+    public ResponseEntity<String> adminLogin(@RequestBody LoginDto loginDto) {
+        try {
+            String response = userService.officerLogin(loginDto);
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 }

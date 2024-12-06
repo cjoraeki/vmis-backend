@@ -1,6 +1,8 @@
 package com.threemtt.vmis.service;
 
 
+import com.threemtt.vmis.dto.request.AdminDto;
+import com.threemtt.vmis.dto.request.LoginDto;
 import com.threemtt.vmis.dto.request.UserRequest;
 import com.threemtt.vmis.dto.response.UserResponse;
 import com.threemtt.vmis.enums.Role;
@@ -109,6 +111,34 @@ public class UserServiceImpl implements UserService {
         BeanUtils.copyProperties(updatedUser, userResponse);
 
         return userResponse;
+    }
+
+    @Override
+    public String officerLogin(LoginDto loginDto) {
+        Optional<Officer> officer = officerRepository.findByBadgeNumber(loginDto.getBadgeNumber());
+
+        if (officer.isEmpty()) {
+            throw new RuntimeException("Officer not found");
+        }
+
+        if (!(loginDto.getPassword() == officer.get().getPassword())) {
+            throw new RuntimeException("Invalid password");
+        }
+
+        return loginDto.getBadgeNumber()+ " login successful.";
+    }
+
+    @Override
+    public String adminLogin(AdminDto adminDto) {
+        Optional<Admin> admin = adminRepository.findByBadgeNumber(adminDto.getBadgeNumber());
+
+        if (admin.isEmpty()) {
+            throw new RuntimeException("Officer not found");
+        }
+        if (!(admin.get().getBadgeNumber() == adminDto.getBadgeNumber())){
+            throw new RuntimeException("Invalid Badge number");
+        }
+        return adminDto.getBadgeNumber()+ " login successful.";
     }
 
     @Override
