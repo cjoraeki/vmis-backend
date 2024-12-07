@@ -1,7 +1,7 @@
 package com.threemtt.vmis.controller;
 
 import com.threemtt.vmis.dto.request.AdminDto;
-import com.threemtt.vmis.dto.request.LoginDto;
+import com.threemtt.vmis.dto.request.OfficerDto;
 import com.threemtt.vmis.dto.request.UserRequest;
 import com.threemtt.vmis.dto.response.UserResponse;
 import com.threemtt.vmis.model.Officer;
@@ -62,9 +62,9 @@ public class UserController {
     }
 
     @PostMapping("/login/officer")
-    public ResponseEntity<String> adminLogin(@RequestBody LoginDto loginDto) {
+    public ResponseEntity<String> adminLogin(@RequestBody OfficerDto officerDto) {
         try {
-            String response = userService.officerLogin(loginDto);
+            String response = userService.officerLogin(officerDto);
             return ResponseEntity.ok(response);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());

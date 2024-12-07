@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class LoginDto {
+public class OfficerDto {
     private String badgeNumber;
     private String password;
 

@@ -2,7 +2,7 @@ package com.threemtt.vmis.service;
 
 
 import com.threemtt.vmis.dto.request.AdminDto;
-import com.threemtt.vmis.dto.request.LoginDto;
+import com.threemtt.vmis.dto.request.OfficerDto;
 import com.threemtt.vmis.dto.request.UserRequest;
 import com.threemtt.vmis.dto.response.UserResponse;
 import com.threemtt.vmis.enums.Role;
@@ -114,18 +114,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String officerLogin(LoginDto loginDto) {
-        Optional<Officer> officer = officerRepository.findByBadgeNumber(loginDto.getBadgeNumber());
+    public String officerLogin(OfficerDto officerDto) {
+        Optional<Officer> officer = officerRepository.findByBadgeNumber(officerDto.getBadgeNumber());
 
         if (officer.isEmpty()) {
             throw new RuntimeException("Officer not found");
         }
 
-        if (!(loginDto.getPassword() == officer.get().getPassword())) {
+        if (!(officer.get().getBadgeNumber().equals(officerDto.getBadgeNumber()) )){
+            System.out.println(officer.get().getBadgeNumber());
+            throw new RuntimeException("Invalid Badge number");
+        }
+
+        if (!(officer.get().getPassword().equals(officerDto.getPassword()) )){
+            System.out.println(officer.get().getBadgeNumber());
             throw new RuntimeException("Invalid password");
         }
 
-        return loginDto.getBadgeNumber()+ " login successful.";
+        return officerDto.getBadgeNumber()+ " login successful.";
     }
 
     @Override
@@ -135,7 +141,8 @@ public class UserServiceImpl implements UserService {
         if (admin.isEmpty()) {
             throw new RuntimeException("Officer not found");
         }
-        if (!(admin.get().getBadgeNumber() == adminDto.getBadgeNumber())){
+        if (!(admin.get().getBadgeNumber().equals(adminDto.getBadgeNumber()) )){
+            System.out.println(admin.get().getBadgeNumber());
             throw new RuntimeException("Invalid Badge number");
         }
         return adminDto.getBadgeNumber()+ " login successful.";
